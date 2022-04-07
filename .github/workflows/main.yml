@@ -20,7 +20,6 @@ jobs:
           chmod +x resolve_remote.sh
       - name: Build and deploy docs
         run: |
-          echo "openorg.software" > "${GITHUB_WORKSPACE}/docs/CNAME"
           export CONFIG_FILE="${GITHUB_WORKSPACE}/mkdocs.yml"
           remote_repo="https://x-access-token:${{secrets.DEPLOY_TOKEN}}@${GITHUB_DOMAIN:-"github.com"}/${GITHUB_REPOSITORY}.git"
           ./resolve_remote.sh ${{secrets.DEPLOY_TOKEN}}
