@@ -1,0 +1,32 @@
+name: Publish docs via GitHub Pages
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Deploy docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v1
+      - name: dependencies
+        run: |
+          sudo apt-get install plantuml git curl python3 python3-pip default-jre graphviz
+          wget https://bootstrap.pypa.io/get-pip.py
+          python get-pip.py
+          pip install -r requirements.txt
+          chmod +x resolve_remote.sh
+      - name: Build and deploy docs
+        run: |
+          echo "openorg.software" > "${GITHUB_WORKSPACE}/docs/CNAME"
+          export CONFIG_FILE="${GITHUB_WORKSPACE}/mkdocs.yml"
+          remote_repo="https://x-access-token:${{secrets.DEPLOY_TOKEN}}@${GITHUB_DOMAIN:-"github.com"}/${GITHUB_REPOSITORY}.git"
+          ./resolve_remote.sh ${{secrets.DEPLOY_TOKEN}}
+          mkdocs build --strict
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.${GITHUB_DOMAIN:-"github.com"}"
+          git remote rm origin
+          git remote add origin "${remote_repo}"
+          mkdocs gh-deploy --config-file "${CONFIG_FILE}" --force

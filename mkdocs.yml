@@ -1,0 +1,38 @@
+site_name: OpenOrg
+site_description: 'Open Source Software Stack for Organizations'
+site_author: 'OpenOrg Team'
+docs_dir: docs/
+repo_name: 'openorg-software/openorg.github.io'
+repo_url: 'https://github.com/openorg.software/openorg.github.io'
+nav:
+  - Home: index.md
+
+theme:
+  name: 'material'
+
+extra:
+  copyright: Copyright &copy; 2022 OpenOrg Team & Contributors
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/openorg-software
+
+
+plugins:
+  - search
+  - build_plantuml:
+      render: "local" # or "local" for local rendering
+      bin_path: "/usr/bin/plantuml"
+      output_format: "svg" # or "png"
+      diagram_root: "docs/diagrams" # should reside under docs_dir
+      output_folder: "out"
+      input_folder: "src"
+      input_extensions: "" # comma separated list of extensions to parse, by default every file is parsed
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - plantuml_markdown
