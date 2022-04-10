@@ -21,8 +21,8 @@ jobs:
       - name: Build and deploy docs
         run: |
           export CONFIG_FILE="${GITHUB_WORKSPACE}/mkdocs.yml"
-          remote_repo="https://x-access-token:${{secrets.DEPLOY_TOKEN}}@${GITHUB_DOMAIN:-"github.com"}/${GITHUB_REPOSITORY}.git"
-          ./resolve_remote.sh ${{secrets.DEPLOY_TOKEN}}
+          remote_repo="https://x-access-token:${{secrets.GITHUB_TOKEN}}@${GITHUB_DOMAIN:-"github.com"}/${GITHUB_REPOSITORY}.git"
+          ./resolve_remote.sh ${{secrets.GITHUB_TOKEN}}
           mkdocs build --strict
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.${GITHUB_DOMAIN:-"github.com"}"
